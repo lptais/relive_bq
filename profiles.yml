@@ -10,13 +10,22 @@ default:
       timeout_seconds: 300
       location: EU
       priority: interactive
-
-    prod:
-      type: bigquery
-      method: oauth
-      project: gdd-analytics-engineer
-      dataset: dbt_core_prod
-      threads: 4
-      timeout_seconds: 300
-      location: EU
+    ci:
+      dataset:  "{{ env_var('CI_DATASET') }}"
+      keyfile: "{{ env_var('SA_KEYFILE') }}"
+      method: service-account
       priority: interactive
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      location: europe-west4  
+      threads: 8
+      timeout_seconds: 300
+      type: bigquery
+    prod:
+      dataset: dbt_prod
+      keyfile: "{{ env_var('SA_KEYFILE') }}"
+      method: service-account
+      priority: interactive
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      threads: 8
+      timeout_seconds: 300
+      type: bigquery
