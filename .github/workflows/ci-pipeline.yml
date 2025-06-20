@@ -53,7 +53,7 @@ jobs:
 
       - name: Install dbt dependencies
         run: |
-          dbt deps --project-dir=dbt_project      
+          dbt deps   
 
       - name: Build dbt models
         run: |
