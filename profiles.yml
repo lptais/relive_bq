@@ -16,8 +16,8 @@ default:
       method: service-account
       priority: interactive
       project: "{{ env_var('GCP_PROJECT_ID') }}"
-      location: europe-west4  
-      threads: 8
+      location: EU  
+      threads: 4
       timeout_seconds: 300
       type: bigquery
     prod:
@@ -27,5 +27,6 @@ default:
       priority: interactive
       project: "{{ env_var('GCP_PROJECT_ID') }}"
       threads: 8
+      location: EU
       timeout_seconds: 300
       type: bigquery
