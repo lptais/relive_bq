@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: int_procurements_bids
+    description: >
+      One row per procurement, enriched with number of bids, winner supplier, and winner value.
+    columns:
+      - name: procurement_number
+        description: "Primary key of this model, uniquely identifies a procurement."
+        tests:
+          - not_null
+          - unique
+      - name: title
+        description: "Cleaned procurement title without identification codes."
+      - name: publish_date
+        description: "Publish date of the procurement."
+      - name: buyer
+        description: "Organization that published the procurement."
+      - name: number_of_bids
+        description: "Total number of bids received for this procurement."
+      - name: winner_supplier
+        description: "Supplier who submitted the winning bid."
+      - name: winner_bid_value
+        description: "Numeric value of the winning bid."
+      - name: winner_bid_currency
+        description: "Currency of the winning bid."
+
+  - name: int_companies_bids
+    description: >
+      One row per supplier–procurement pair, includes participation info and winner flag.
+    columns:
+      - name: generated_pk
+        description: "Primary key, generated with the combination of supplier and procurement_id."
+        tests:
+          - not_null
+          - unique
+      - name: procurement_id
+        description: "Foreign key to the procurement."
+        tests:
+          - not_null
+      - name: supplier
+        description: "Supplier name."
+        tests:
+          - not_null
+      - name: is_winner
+        description: "True if the supplier won the procurement."

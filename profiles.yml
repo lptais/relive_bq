@@ -1,0 +1,22 @@
+default:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: gdd-analytics-engineer
+      dataset: dbt_core_tpereira
+      threads: 4
+      timeout_seconds: 300
+      location: EU
+      priority: interactive
+
+    prod:
+      type: bigquery
+      method: oauth
+      project: gdd-analytics-engineer
+      dataset: dbt_core_prod
+      threads: 4
+      timeout_seconds: 300
+      location: EU
+      priority: interactive

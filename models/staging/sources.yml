@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: landing_zone
+    database: gdd-analytics-engineer
+    schema: landing_zone
+    description: "Raw data loaded from GCS via Python script, validated against YAML contracts."
+
+    tables:
+      - name: bids_12
+        description: "Bids data from source 12."
+      - name: bids_34
+        description: "Bids data from source 34."
+      - name: bids_56
+        description: "Bids data from source 56."
+      - name: procurements_12
+        description: "Procurement data from source 12."
+      - name: procurements_34
+        description: "Procurement data from source 34."
+      - name: procurements_56
+        description: "Procurement data from source 56."
