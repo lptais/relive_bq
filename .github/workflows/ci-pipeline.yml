@@ -10,7 +10,6 @@ on:
 
 env:
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-  DBT_PROFILES_DIR: ${{ github.workspace }}
 
 jobs:
   dbt-slim-ci:
@@ -57,7 +56,7 @@ jobs:
 
       - name: Build dbt models
         run: |
-          dbt build --profiles-dir=${{ env.DBT_PROFILES_DIR }} --target ci --empty      
+          dbt build  --target ci --empty      
    
       # Hacky way of getting around the bq outputting annoying welcome stuff on first run which breaks jq
       - name: Check existing CI datasets
