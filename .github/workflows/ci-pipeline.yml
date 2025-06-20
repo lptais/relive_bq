@@ -57,7 +57,7 @@ jobs:
 
       - name: Build dbt models
         run: |
-          dbt build --profiles-dir=${{ env.DBT_PROFILES_DIR }} --project-dir=dbt_project --target ci         
+          dbt build --profiles-dir=${{ env.DBT_PROFILES_DIR }} --project-dir=dbt_project --target ci --empty      
    
       # Hacky way of getting around the bq outputting annoying welcome stuff on first run which breaks jq
       - name: Check existing CI datasets
