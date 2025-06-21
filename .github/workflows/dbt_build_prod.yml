@@ -1,11 +1,13 @@
-name: Manual dbt Build (Prod)
+name: cd-dbt-build-upload-manifest
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main  # Triggers when PRs are merged into main
 
 jobs:
-  dbt-build-prod:
-    name: Run dbt build with prod profile
+  build-and-upload:
+    name: Build DBT project (prod) and upload manifest
     runs-on: ubuntu-latest
 
     steps:
@@ -15,21 +17,36 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Install dbt packages
         run: dbt deps
 
-      - name: Write service account JSON file
-        run: echo "${{ secrets.GCP_SA_KEY }}" > /tmp/sa.json
+      - name: Write GCP service account JSON to file
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > /tmp/sa.json
+        shell: bash
 
       - name: Run dbt build with prod target
         run: dbt build --target prod
         env:
-          DBT_PROFILES_DIR: ${{ github.workspace }} # points to root where profiles.yml lives
+          DBT_PROFILES_DIR: ${{ github.workspace }}
           SA_KEYFILE: /tmp/sa.json
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Upload manifest.json to GCS
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: target/manifest.json
+          destination: datenna-assessment/dbt_artifacts/manifest.json
+          parent: false
