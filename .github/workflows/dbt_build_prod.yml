@@ -32,10 +32,12 @@ jobs:
       - name: Install dbt packages
         run: dbt deps
 
-      - name: Write service account key to file
+      - name: Set up service account key file
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" > $SA_KEYFILE
-        shell: bash
+          printf '%s' "${GCP_SA_KEY}" > ${{github.workspace}}/.github/key.json
+          echo SA_KEYFILE=${{github.workspace}}/.github/key.json >> $GITHUB_ENV
 
       - name: Run dbt build with prod target
         run: dbt build --target prod
