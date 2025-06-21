@@ -31,6 +31,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   relive_bq:
+    +persist_docs:
+      relation: true              # apply model (table/view) descriptions
+      columns: true               # apply column-level descriptions
     staging:
       +materialized: view
     intermediate:
