@@ -1,7 +1,6 @@
 version: 2
 
 models:
-
   - name: stg_bids
     description: >
       Staging model for all bids from various sources. Cleans and standardizes supplier names,

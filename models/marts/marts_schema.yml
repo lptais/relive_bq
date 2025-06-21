@@ -1,7 +1,6 @@
 version: 2
 
 models:
-
   - name: procurements_page
     description: >
       Procurement-level dataset used for the Procurements Page on the platform.

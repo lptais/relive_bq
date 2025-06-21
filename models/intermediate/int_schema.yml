@@ -1,7 +1,6 @@
 version: 2
 
 models:
-
   - name: int_suppliers_bids
     description: >
       Combines bids and procurement metadata, and flags winning bids using a window function.
