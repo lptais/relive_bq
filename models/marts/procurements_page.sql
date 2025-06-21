@@ -14,7 +14,10 @@ aggregated as (
         max(if(is_winner, value_amount, null)) as winner_bid_value
     from bids
     group by
-        procurement_number, source, title, publish_date, buyer
+        procurement_number, 
+        title, 
+        publish_date, 
+        buyer
 )
 
 select * from aggregated

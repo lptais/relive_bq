@@ -1,3 +1,7 @@
+/* 
+Model joining procurements and bids with ARRAY_AGG logic.
+This model is not part of the solution. Used for validation purposes.
+*/
 with procurements as (
   select * from {{ ref('stg_procurements') }}
 ),

@@ -36,7 +36,13 @@ models:
                 severity: warn
 
     meta:
-      primary_key: [procurement_number, source]
+      primary_key: [procurement_number, winner_supplier_name]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - procurement_number
+            - winner_supplier_name
 
   - name: company_profile_page
     description: >
@@ -76,3 +82,10 @@ models:
 
     meta:
       primary_key: [supplier, procurement_number, source]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - procurement_number
+            - supplier
+            - source
