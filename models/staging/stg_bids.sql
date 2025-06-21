@@ -12,7 +12,7 @@ with all_bids as (
 cleaned as (
   select
     supplier,
-    cast(procurement_number as string) as procurement_number,
+    procurement_number,
     regexp_extract(value, r'([^\d.]+)') as currency,
     cast(regexp_extract(value, r'([\d.]+)') as float64) as value_amount,
     date_accessed,

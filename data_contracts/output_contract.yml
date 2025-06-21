@@ -1,0 +1,67 @@
+id: output_contract
+info:
+  title: Output Contract for Platform Use Cases
+  description: |
+    Data contract specifying the expected schema and rules for the final processed output
+    delivered by the dbt pipeline. This contract ensures compatibility with consumer expectations
+    for the Procurements Page and Company Profile Page on the platform.
+
+models:
+  procurements_page:
+    description: >
+      One row per procurement with bidding summary and winner info.
+    primary_key: [procurement_number, source]
+    fields:
+      procurement_number:
+        type: integer
+        required: true
+      procurement_title:
+        type: string
+        required: true
+        pattern: "^(?!\\s*\\d+-\\d+).+"
+      published_date:
+        example: "2018-11-20"
+        required: true
+        type: string
+      buyer:
+        type: string
+      number_of_bids:
+        type: integer
+      winner_supplier_name:
+        type: string
+        required: true
+      winner_bid_value:
+        type: float
+        required: true
+
+  company_profile_page:
+    description: >
+      One row per bid, including supplier info and winner flag.
+    primary_key: [supplier, procurement_number, source]
+    fields:
+      supplier:
+        type: string
+        required: true
+      procurement_number:
+        type: integer
+        required: true
+      source:
+        type: string
+        required: true
+      procurement_title:
+        type: string
+        required: true
+        pattern: "^(?!\\s*\\d+-\\d+).+"
+      published_date:
+        example: "2018-11-20"
+        required: true
+        type: string
+      buyer:
+        type: string
+      value_amount:
+        type: float
+        required: true
+      currency:
+        type: string
+      is_winner:
+        type: boolean
