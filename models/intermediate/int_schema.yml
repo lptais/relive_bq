@@ -1,46 +1,40 @@
 version: 2
 
 models:
-  - name: int_procurements_bids
-    description: >
-      One row per procurement, enriched with number of bids, winner supplier, and winner value.
-    columns:
-      - name: procurement_number
-        description: "Primary key of this model, uniquely identifies a procurement."
-        tests:
-          - not_null
-          - unique
-      - name: title
-        description: "Cleaned procurement title without identification codes."
-      - name: publish_date
-        description: "Publish date of the procurement."
-      - name: buyer
-        description: "Organization that published the procurement."
-      - name: number_of_bids
-        description: "Total number of bids received for this procurement."
-      - name: winner_supplier
-        description: "Supplier who submitted the winning bid."
-      - name: winner_bid_value
-        description: "Numeric value of the winning bid."
-      - name: winner_bid_currency
-        description: "Currency of the winning bid."
 
-  - name: int_companies_bids
+  - name: int_suppliers_bids
     description: >
-      One row per supplier–procurement pair, includes participation info and winner flag.
+      Combines bids and procurement metadata, and flags winning bids using a window function.
+      Includes fields necessary for both procurement and company profile pages.
     columns:
       - name: generated_pk
-        description: "Primary key, generated with the combination of supplier and procurement_id."
+        description: Generated primary key, combination of supplier, procurement_number and source.
         tests:
           - not_null
           - unique
-      - name: procurement_id
-        description: "Foreign key to the procurement."
-        tests:
-          - not_null
       - name: supplier
-        description: "Supplier name."
+        description: Name of the supplier submitting the bid.
         tests:
           - not_null
+      - name: procurement_number
+        description: Local procurement identifier within a source.
+        tests:
+          - not_null
+      - name: source
+        description: Source ID to uniquely identify a procurement across datasets.
+        tests:
+          - not_null
+      - name: value_amount
+        description: Numeric bid value extracted from the original string.
+      - name: currency
+        description: Currency extracted from the original bid value string.
       - name: is_winner
-        description: "True if the supplier won the procurement."
+        description: True if this bid was ranked as the winner for its procurement.
+      - name: title
+        description: Cleaned title of the procurement.
+        tests:
+          - not_null
+      - name: publish_date
+        description: Parsed publication date.
+      - name: buyer
+        description: Organization issuing the procurement.

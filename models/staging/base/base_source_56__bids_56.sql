@@ -7,8 +7,7 @@ with source as (
     procurement_number,
     value,
     date_accessed,
-    CAST(source[OFFSET(4)] AS STRING) as source
+    COALESCE(CAST(source[OFFSET(4)] AS STRING), "56") as source
   from source
   )
   select * from renamed
-    

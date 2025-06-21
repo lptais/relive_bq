@@ -1,5 +1,5 @@
 with source as (
-        select * from {{ source('landing_zone', 'procurements_34') }}
+        select * from {{ source('landing_zone', 'procurements_12') }}
   ),
   renamed as (
       select
@@ -7,14 +7,12 @@ with source as (
         type,
         buyer,
         title,
-        project_name,
-        project_identity as project_id,
+        project_id,
         FORMAT_DATE('%Y-%m-%d', PARSE_DATE('%m/%d/%Y', publish_date)) as publish_date,
         CAST(date_accessed as DATE) as date_accessed,
-        CAST(source[OFFSET(8)] AS STRING) as source,
+        COALESCE(CAST(source[OFFSET(7)] AS STRING), "12") as source,
         procurement_number
 
       from source
   )
   select * from renamed
-    

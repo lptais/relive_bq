@@ -1,0 +1,79 @@
+version: 2
+
+models:
+
+  - name: procurements_page
+    description: >
+      Procurement-level dataset used for the Procurements Page on the platform.
+      One row per procurement, including metadata, number of bids, and winning bid info.
+    columns:
+      - name: procurement_number
+        description: Identifier of the procurement, scoped within the source.
+        tests:
+          - not_null
+      - name: procurement_title
+        description: Cleaned procurement title. Should not contain ID codes like "1-560".
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_match_regex:
+              regex: "^\\\\s*\\\\d+-\\\\d+"
+              config:
+                severity: warn
+      - name: published_date
+        description: Date the procurement was published, parsed into DATE format.
+      - name: buyer
+        description: Name of the organization publishing the procurement.
+      - name: number_of_bids
+        description: Count of bids submitted for the procurement.
+      - name: winner_supplier_name
+        description: Name of the supplier who submitted the winning bid.
+        tests:
+          - not_null
+      - name: winner_bid_value
+        description: Monetary value of the winning bid.
+        tests:
+          - not_null:
+              config:
+                severity: warn
+
+    meta:
+      primary_key: [procurement_number, source]
+
+  - name: company_profile_page
+    description: >
+      Bid-level dataset used for enriching a supplier's profile on the platform.
+      One row per bid, including procurement metadata and winner flag.
+    columns:
+      - name: supplier
+        description: Name of the bidding company.
+        tests:
+          - not_null
+      - name: procurement_number
+        description: Procurement the supplier bid on.
+        tests:
+          - not_null
+      - name: source
+        description: Source code for the procurement.
+        tests:
+          - not_null
+      - name: procurement_title
+        description: Cleaned procurement title the supplier bid on.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_match_regex:
+              regex: "^\\\\s*\\\\d+-\\\\d+"
+              config:
+                severity: warn
+      - name: published_date
+        description: Date when the procurement was published.
+      - name: buyer
+        description: Organization publishing the procurement.
+      - name: value_amount
+        description: Numeric value of the supplier’s bid.
+      - name: currency
+        description: Currency extracted from the bid's original value string.
+      - name: is_winner
+        description: True if this bid was selected as the winning bid.
+
+    meta:
+      primary_key: [supplier, procurement_number, source]

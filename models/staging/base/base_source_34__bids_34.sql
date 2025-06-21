@@ -1,5 +1,5 @@
 with source as (
-        select * from {{ source('landing_zone', 'bids_12') }}
+        select * from {{ source('landing_zone', 'bids_34') }}
   ),
   renamed as (
     select
@@ -7,8 +7,7 @@ with source as (
 procurement_number,
     value,
     date_accessed,
-    CAST(source[OFFSET(4)] AS STRING) as source
+    COALESCE(CAST(source[OFFSET(4)] AS STRING), "34") as source
   from source
   )
   select * from renamed
-    
