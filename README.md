@@ -38,7 +38,7 @@ The data is transformed in dbt using a `staging → intermediate → marts` laye
   - `is_winner` boolean
 - **Use case:** enriches the profile of each company with all bids submitted, highlighting wins.
 
-The **contract for the output** can be found in the data_contracts folder. Additionally, a Looker Studio dashboard can be seen [here](https://lookerstudio.google.com/s/m7JkUfS4tcM).
+### The **contract for the output** can be found in the data_contracts folder. Additionally, a Looker Studio dashboard can be seen [here](https://lookerstudio.google.com/s/m7JkUfS4tcM).
 ---
 
 ## 🛠 Project Structure
