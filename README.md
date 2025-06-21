@@ -1,6 +1,6 @@
 # dbt Procurement Pipeline
 
-This dbt project transforms procurement and bid data from multiple JSONL sources into clean, reliable output tables that power two key user-facing features in the Datenna platform:
+This dbt project transforms procurement and bid data from multiple JSONL sources into output tables that power two key user-facing features in the Datenna platform:
 
 1. **Procurements Page** – page with all relevant procurements, displays procurement opportunities and winners.
 2. **Company Profile Page** – enriches company pages with all procurements a supplier participated on, and wins.
@@ -37,6 +37,7 @@ The data is transformed in dbt using a `staging → intermediate → marts` laye
   - `is_winner` boolean
 - **Use case:** enriches the profile of each company with all bids submitted, highlighting wins.
 
+The ** contract for the output** can be found in the data_contracts folder.
 ---
 
 ## 🛠 Project Structure
@@ -47,7 +48,7 @@ The data is transformed in dbt using a `staging → intermediate → marts` laye
 - **`marts/*`**: Final models used for downstream consuption
   - `procurements_page.sql`
   - `company_profile_page.sql`
-
+![Diagram](image.png)
 This structure is based on [dbt's project structure best practices](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview).
 
 ---
