@@ -5,7 +5,7 @@ default:
       type: bigquery
       method: oauth
       project: gdd-analytics-engineer
-      dataset: dbt_core_tpereira
+      dataset: "{{ 'dbt_' ~ env_var('USER') }}"
       threads: 4
       timeout_seconds: 300
       location: EU
