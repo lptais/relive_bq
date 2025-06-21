@@ -73,7 +73,7 @@ models:
         description: Date when the procurement was published.
       - name: buyer
         description: Organization publishing the procurement.
-      - name: value_amount
+      - name: bid_value
         description: Numeric value of the supplier’s bid.
       - name: currency
         description: Currency extracted from the bid's original value string.

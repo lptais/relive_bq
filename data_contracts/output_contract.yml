@@ -94,7 +94,7 @@ models:
         example: "Government"
         required: true
 
-      value_amount:
+      bid_value:
         type: float
         example: 230000.50
         required: true
