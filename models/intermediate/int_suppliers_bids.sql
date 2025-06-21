@@ -29,6 +29,8 @@ bids_with_procurements as (
     inner join procurements p
       on b.procurement_number = p.procurement_number
      and b.source = p.source
+    -- Excludes bids with null values
+    where b.value_amount is not null
 )
 
 select

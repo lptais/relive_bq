@@ -1,3 +1,7 @@
+{{ config(
+    cluster_by = ['supplier']
+) }}
+
 select
     supplier,
     procurement_number,
