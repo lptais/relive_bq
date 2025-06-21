@@ -8,7 +8,7 @@ on:
   workflow_dispatch: # Allow manual run
 
 env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
   DBT_PROFILES_DIR: ${{ github.workspace }}
   SA_KEYFILE: ${{ github.workspace }}/.github/key.json
 
