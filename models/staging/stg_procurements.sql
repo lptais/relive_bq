@@ -39,7 +39,7 @@ cleaned as (
         publish_date,
         date_accessed,
         source,
-        cast(procurement_number as string) as procurement_number
+        procurement_number
     from all_procurements
     where title is not null
       and not regexp_contains(title, r'^\s*\d+\-\d+')
