@@ -1,16 +1,11 @@
-/*
-Flattened model that joins the bids with procurements informations, but only procurements that have a title.
-It defines a winner bid based on the lowest value offered for a given combination of procurement number and source.
-Serves as intermediate model to both marts, procurements_page and company_profile_page.
-*/
 with bids as (
     select *
-    from {{ ref('stg_bids') }}
+        from {{ ref('stg_bids') }}
 ),
 
 procurements as (
     select *
-    from {{ ref('stg_procurements') }}
+        from {{ ref('stg_procurements') }}
 ),
 
 bids_with_procurements as (
@@ -24,7 +19,7 @@ bids_with_procurements as (
         p.title,
         p.publish_date,
         p.buyer,
-    -- Window function to define winning bid, which is assumed to be the lowest one
+    -- Window function to define winning bid, assumed to be the lowest one
         row_number() over (
             partition by b.procurement_number, b.source
             order by b.value_amount asc
