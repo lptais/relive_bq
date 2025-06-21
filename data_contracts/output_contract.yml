@@ -2,66 +2,109 @@ id: output_contract
 info:
   title: Output Contract for Platform Use Cases
   description: |
-    Data contract specifying the expected schema and rules for the final processed output
-    delivered by the dbt pipeline. This contract ensures compatibility with consumer expectations
-    for the Procurements Page and Company Profile Page on the platform.
+    Data contract specifying the expected schema and validation rules for the final outputs
+    delivered by the dbt models. These outputs support the Procurements Page and the
+    Company Profile Page in the Datenna platform.
 
 models:
+
   procurements_page:
-    description: >
-      One row per procurement with bidding summary and winner info.
-    primary_key: [procurement_number, source]
+    description: |
+      Output for the Procurements Page. Each row represents one procurement enriched
+      with summary information about bids and the winner.
+    metadata:
+      primary_key:
+        - procurement_number
+        - winner_supplier_name
     fields:
       procurement_number:
         type: integer
-        required: true
+        example: 162
+        required: false
+
       procurement_title:
         type: string
+        example: "Metals"
         required: true
         pattern: "^(?!\\s*\\d+-\\d+).+"
+
       published_date:
-        example: "2018-11-20"
-        required: true
         type: string
+        example: "6/23/2020"
+        required: true
+
       buyer:
         type: string
+        example: "Military"
+        required: true
+
       number_of_bids:
         type: integer
+        example: 5
+        required: true
+
       winner_supplier_name:
         type: string
+        example: "Livetube"
         required: true
+
       winner_bid_value:
         type: float
+        example: 230000.50
         required: true
 
   company_profile_page:
-    description: >
-      One row per bid, including supplier info and winner flag.
-    primary_key: [supplier, procurement_number, source]
+    description: |
+      Output for the Company Profile Page. Each row represents one bid submitted by a
+      supplier, enriched with procurement details and a winner flag.
+    metadata:
+      primary_key:
+        - supplier
+        - procurement_number
+        - source
     fields:
       supplier:
         type: string
+        example: "Livetube"
         required: true
+
       procurement_number:
         type: integer
+        example: 193
         required: true
+
       source:
         type: string
+        example: "56"
         required: true
+
       procurement_title:
         type: string
+        example: "Equipment"
         required: true
         pattern: "^(?!\\s*\\d+-\\d+).+"
+
       published_date:
-        example: "2018-11-20"
-        required: true
         type: string
+        example: "6/23/2020"
+        required: true
+
       buyer:
         type: string
+        example: "Government"
+        required: true
+
       value_amount:
         type: float
+        example: 230000.50
         required: true
+
       currency:
         type: string
+        example: "¥"
+        required: true
+
       is_winner:
         type: boolean
+        example: true
+        required: true
