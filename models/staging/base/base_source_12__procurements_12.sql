@@ -8,7 +8,7 @@ with source as (
         buyer,
         title,
         project_id,
-        FORMAT_DATE('%Y-%m-%d', PARSE_DATE('%m/%d/%Y', publish_date)) as publish_date,
+        publish_date,
         CAST(date_accessed as DATE) as date_accessed,
         COALESCE(CAST(source[OFFSET(7)] AS STRING), "12") as source,
         procurement_number
