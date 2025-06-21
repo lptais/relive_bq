@@ -38,7 +38,7 @@ The data is transformed in dbt using a `staging → intermediate → marts` laye
   - `is_winner` boolean
 - **Use case:** enriches the profile of each company with all bids submitted, highlighting wins.
 
-The ** contract for the output** can be found in the data_contracts folder.
+The **contract for the output** can be found in the data_contracts folder. Additionally, a Looker Studio dashboard can be seen [here](https://lookerstudio.google.com/s/m7JkUfS4tcM).
 ---
 
 ## 🛠 Project Structure
@@ -87,10 +87,14 @@ In addition to the key business rules described above, the following assumptions
 
 ## 🚀 How to Run
 
-Check the requirements.txt file, run the command to install it, and then run the appropriate dbt commands:
+1. Create a .venv and activate it.
+2. Run `pip install requirements.txt`
+3. Log in on GCP through `gcloud auth application-default login`
+4. Run dbt!
+
 ```bash
-dbt deps       # install packages, such as dbt_utils and dbt_expectations
-dbt build      # run and tests models
-dbt docs generate # generate documentation
-dbt docs serve # view documentation
+dbt deps           # install packages, such as dbt_utils and dbt_expectations
+dbt build          # run and tests models
+dbt docs generate  # generate documentation
+dbt docs serve     # view documentation
 
