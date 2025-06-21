@@ -3,14 +3,14 @@ name: cd-dbt-build-upload-manifest
 on:
   push:
     branches:
-      - main # Triggers when PRs are merged into main
+      - main # Run on merge to main
 
-  workflow_dispatch:
+  workflow_dispatch: # Allow manual run
 
 env:
-  DBT_PROFILES_DIR: ${{ github.workspace }}
-  SA_KEYFILE: /tmp/sa.json
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  DBT_PROFILES_DIR: ${{ github.workspace }}
+  SA_KEYFILE: ${{ github.workspace }}/.github/key.json
 
 jobs:
   build-and-upload:
@@ -36,8 +36,12 @@ jobs:
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
-          printf '%s' "${GCP_SA_KEY}" > ${{github.workspace}}/.github/key.json
-          echo SA_KEYFILE=${{github.workspace}}/.github/key.json >> $GITHUB_ENV
+          printf '%s' "${GCP_SA_KEY}" > "$SA_KEYFILE"
+
+      - name: Debug env (optional - remove later)
+        run: |
+          echo "GCP_PROJECT_ID=$GCP_PROJECT_ID"
+          echo "SA_KEYFILE=$SA_KEYFILE"
 
       - name: Run dbt build with prod target
         run: dbt build --target prod
