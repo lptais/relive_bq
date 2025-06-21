@@ -2,8 +2,8 @@
 
 This dbt project transforms procurement and bid data from multiple JSONL sources into output tables that power two key user-facing features in the Datenna platform:
 
-1. **Procurements Page** – page with all relevant procurements, displays procurement opportunities and winners.
-2. **Company Profile Page** – enriches company pages with all procurements a supplier participated on, and wins.
+1. **Procurements Page** – page with all relevant procurements, displays procurement information and winners.
+2. **Company Profile Page** – enriches company pages with all procurements a company participated on, and winner information.
 
 ---
 
@@ -20,8 +20,9 @@ The data is transformed in dbt using a `staging → intermediate → marts` laye
 ### 1. `procurements_page`
 - One row per procurement.
 - Fields:
+  - Procurement number
   - Procurement title (cleaned)
-  - Publish date
+  - Published date
   - Buyer
   - Number of bids
   - Winner supplier name
@@ -32,7 +33,7 @@ The data is transformed in dbt using a `staging → intermediate → marts` laye
 - One row per bid.
 - Fields:
   - Supplier
-  - Procurement metadata (title, publish date, buyer)
+  - Procurement metadata (title, published date, buyer)
   - Value amount and currency
   - `is_winner` boolean
 - **Use case:** enriches the profile of each company with all bids submitted, highlighting wins.
@@ -54,14 +55,17 @@ This structure is based on [dbt's project structure best practices](https://docs
 ---
 
 ## 📌 Key Business Rules Enforced
+(As seen in the provided output_description.md file)
+- All procurements should have a title
+- The title shouldn't have identification codes (e.g. '1-560')
+- All the bids should have a supplier name
+- The bid value and currency should be separated in two columns.
 
-- All procurements must have a non-null, cleaned title (titles with ID patterns like `"1-560"` are excluded).
-- All bids must have a non-null supplier and bid value.
-- Bid `value` strings are split into:
-  - `value_amount`: numeric
-  - `currency`: symbol
-- Bids without a numeric `value_amount` are filtered out.
-- The winner per procurement is flagged using a window function (`row_number` over lowest bid amount).
+---
+## 🧠 Assumptions
+In addition to the key business rules described above, the following assumptions were used:
+- A procurement is considered **won by the bid with the lowest non-null value**.
+- Only bids with non-null values are considered. Therefore, bids with missing or unparsable `value` fields are filtered out in the intermediate layer.
 
 ---
 
@@ -72,28 +76,18 @@ This structure is based on [dbt's project structure best practices](https://docs
 
 ---
 
-## 🧠 Assumptions
-
-- A procurement is considered **won by the bid with the lowest non-null value**.
-- Title cleaning assumes any title starting with a pattern like `1-560` or similar ID codes is not meaningful for users and is excluded.
-- Bids with missing or unparsable `value` fields are dropped at the staging level.
-- All sources are structurally aligned (contract-compliant) before dbt processing.
-- `publish_date` is parsed from varying formats (e.g., `MM/DD/YYYY`), and invalid ones are dropped upstream or handled during staging.
-
----
-
 ## 🧪 Tests and Validation
 
 - Column-level tests for:
   - Not null constraints (e.g., `supplier`, `procurement_number`)
   - Regex validation for cleaned titles
-- Primary keys defined per model for uniqueness and integrity, for int model due to join operation.
-- Schema descriptions and column docs persisted to BigQuery
+- Primary keys defined per model for uniqueness and integrity, e.g. int model due to join operation.
 
 ---
 
 ## 🚀 How to Run
 
+Check the requirements.txt file, run the command to install it, and then run the appropriate dbt commands:
 ```bash
 dbt deps       # install packages, such as dbt_utils and dbt_expectations
 dbt build      # run and tests models
