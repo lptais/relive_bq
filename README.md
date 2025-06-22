@@ -49,7 +49,7 @@ The data is transformed in dbt using a `staging → intermediate → marts` laye
 - **`marts/*`**: Final models used for downstream consuption
   - `procurements_page.sql`
   - `company_profile_page.sql`
-![Diagram](image.png)
+![Diagram](dbt_project_structure.png)
 This structure is based on [dbt's project structure best practices](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview).
 
 ---

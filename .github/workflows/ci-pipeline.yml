@@ -5,14 +5,14 @@ on:
   pull_request:
     branches: ["main"]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allow manual run
   workflow_dispatch:
 
 env:
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
 
 jobs:
-  dbt-slim-ci:
+  dbt-ci:
     runs-on: ubuntu-latest
 
     steps:
